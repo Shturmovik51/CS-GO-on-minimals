@@ -21,8 +21,6 @@ public class Player : NetworkBehaviour
         }
         
         playerCharacter = Instantiate(playerPrefab,transform);
-        NetworkServer.SpawnWithClientAuthority(playerCharacter,
-        connectionToClient);
-     
+        NetworkServer.SpawnWithClientAuthority(playerCharacter, connectionToClient);     
     }
 }

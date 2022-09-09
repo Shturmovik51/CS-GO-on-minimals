@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
+
 public abstract class FireAction : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -30,15 +32,17 @@ public abstract class FireAction : MonoBehaviour
             ammunition.Enqueue(bullet);
         }
     }
-    public virtual async void Reloading()
+
+    public virtual async void CmdReloading()
     {
         bullets = await Reload();
     }
+
     protected virtual void Shooting()
     {
         if (bullets.Count == 0)
         {
-            Reloading();
+            CmdReloading();                                                        
         }
     }
     private async Task<Queue<GameObject>> Reload()

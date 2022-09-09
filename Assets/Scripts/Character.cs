@@ -5,16 +5,18 @@ using UnityEngine.Networking;
 public abstract class Character : NetworkBehaviour
 {
     protected Action OnUpdateAction { get; set; }
-    protected abstract FireAction fireAction { get; set; }
+    protected abstract RayShooter fireAction { get; set; }
     [SyncVar] protected Vector3 serverPosition;
     [SyncVar] protected Quaternion serverRotation;
     [SyncVar] protected int CountPlayers;
-    [SyncVar] public int money = 100;
+    [SyncVar] private int money = 100;
+    [SyncVar] protected int ServerHealth;
 
     protected virtual void Initiate()
     {
         OnUpdateAction += Movement;
-    }
+        OnUpdateAction += HealthUpdater;
+    }    
 
     private void Update()
     {
@@ -33,5 +35,31 @@ public abstract class Character : NetworkBehaviour
         serverRotation = rotation;
     }
 
+    [Command]
+    protected void CmdSetStartHealth(int health)
+    {
+        ServerHealth = health;
+    }
+
+    [Command]
+    protected void CmdShoot()
+    {
+        fireAction.ServerShoot();
+    }
+
+
+    public void UpdateHealth()
+    {
+        ServerHealth -= 5;
+
+        if(ServerHealth <= 0)
+        {
+            ServerHealth = 0;
+            NetworkServer.DisconnectAll();
+        }
+    }
+
     public abstract void Movement();
+    public abstract void HealthUpdater();
+
 }

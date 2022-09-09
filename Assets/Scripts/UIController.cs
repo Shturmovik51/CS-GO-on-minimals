@@ -31,7 +31,7 @@ public class UIController : NetworkBehaviour
             playerConnections = monayCount.Length;
             foreach (GameObject monay in monayCount)
             {
-                allMoney =allMoney+ monay.GetComponent<PlayerCharacter>().money;
+                //allMoney =allMoney+ monay.GetComponent<PlayerCharacter>().money;
             }
             
         }
